@@ -1,0 +1,6 @@
+opencv-python>=4.8
+numpy>=1.24
+rapidocr-onnxruntime>=1.2.3
+pillow>=9.5
+# 可选：使用 YAML 配置文件
+pyyaml>=6.0

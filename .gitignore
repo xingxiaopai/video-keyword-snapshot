@@ -1,0 +1,27 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+
+# ---- 本机专用配置（不要提交）----
+# .python-path 里存的是本机解释器的绝对路径，换台机器就没用了
+.python-path
+
+# ---- 运行产物 ----
+# 截图输出目录、断点续跑状态文件
+output/
+demo/out/
+_state.json
+**/_state.json
+
+# ---- 编辑器 / 系统 ----
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -1,0 +1,50 @@
+# 视频关键字截图 · 配置文件示例
+# 用法： python video_keyword_snapshot.py -c config.yaml
+# 说明： 命令行参数优先级高于本文件；本文件里没有的项会使用程序默认值。
+
+# ---- 输入 / 输出 ----
+input:
+  - "D:/videos/直播回放"          # 目录（默认递归子目录）
+  # - "D:/videos/课程/第一讲.mp4"  # 也可以直接写单个文件
+  # - "D:/videos/**/*.mp4"        # 也支持通配符
+output: "D:/out/keyword_hits"
+
+# ---- 关键字 ----
+keywords:
+  - 优惠券
+  - 立即下单
+  - 抽奖
+
+# ---- 抽帧与识别范围 ----
+interval: 1.0          # 每 1 秒抽一帧；0.5 = 每秒 2 帧（更细但更慢）
+# start: 60            # 从第 60 秒开始
+# end: 1800            # 到第 1800 秒结束
+roi: "0,0.72,1,1"      # 只识别画面下方 28%（字幕区）；多个区域用分号分隔
+                       # 例： "0,0,1,0.15; 0,0.72,1,1"  = 顶部标题 + 底部字幕
+                       # 不填 = 整帧识别
+
+# ---- 识别精度与速度 ----
+engine: rapidocr       # rapidocr（默认，离线中英文）| tesseract
+max_side: 1600         # OCR 前把长边缩到此值内；调小更快、调大更准（0 = 不缩放）
+min_score: 0.5         # OCR 置信度下限
+scene_threshold: 0.002 # 画面变化阈值：低于此值跳过 OCR（大幅提速）；0 = 关闭，逐帧识别
+fuzzy: 0.0             # 模糊匹配阈值 0~1（如 0.85），容忍 OCR 错字；0 = 关闭
+normalize: true        # 去空白/标点再比对，中文命中率更高
+regex: false           # 关键字按正则解释
+ignore_case: true
+join_lines: true       # 整帧文本合并匹配（应对关键字被 OCR 拆成多个框）
+
+# ---- 截图策略 ----
+save_mode: best        # best = 每段最佳帧 | first = 每段首帧 | all = 全部命中帧
+merge_gap: 2.0         # 间隔小于 2 秒的命中合并为同一段
+min_interval: 0.0      # 两张截图之间的最小间隔（秒），防止刷屏
+image_format: png      # png | jpg
+jpeg_quality: 95
+draw_boxes: false      # 在截图上画出 OCR 文本框
+burn_text: true        # 在截图上烧录时间戳和命中关键字
+flat: false            # true = 所有截图放同一目录；false = 按视频分文件夹
+
+# ---- 运行控制 ----
+workers: 0             # 并行进程数；0 = 自动（CPU 核数一半，上限 4）
+resume: true           # 断点续跑，跳过已完成的视频
+recursive: true        # 递归子目录
